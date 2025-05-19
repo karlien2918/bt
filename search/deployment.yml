@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    argocd.argoproj.io/tracking-id: search:apps/Deployment:default/search
+  name: search
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: search
+  template:
+    metadata:
+      labels:
+        app: search
+    spec:
+      containers:
+        - image: ghcr.io/karlien2918/bt:ci-6c346c6c0a4766790b7d9f71bc75fda9909856cf
+          name: search
+          ports:
+            - containerPort: 80
