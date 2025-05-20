@@ -49,7 +49,7 @@ jobs:
         with:
           context: ./search                                # Docker build context (보통 프로젝트 루트)
           push: true
-          platforms: linux/amd64
+          platforms: linux/arm64
           # 이미지 빌드 후 실제로 푸시까지 수행
           tags: |
             ghcr.io/${{ github.repository }}:ci-${{ github.sha }}
@@ -57,3 +57,5 @@ jobs:
           # Docker 이미지 태그 형식:
           # 예시: ghcr.io/사용자명/레포명:ci-<커밋 SHA>
           # 고유 SHA로 버전 추적이 쉬움 (배포 시점 추적 등 용이)
+
+
