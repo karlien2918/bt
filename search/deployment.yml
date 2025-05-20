@@ -16,7 +16,7 @@ spec:
         app: search
     spec:
       containers:
-        - image: ghcr.io/karlien2918/bt:ci-6c346c6c0a4766790b7d9f71bc75fda9909856cf
+        - image: ghcr.io/karlien2918/bt:latest
           name: search
           ports:
             - containerPort: 80

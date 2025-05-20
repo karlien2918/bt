@@ -3,4 +3,4 @@ spring:
     name: search
 
 server:
-  port: 8080
+  port: 9001
