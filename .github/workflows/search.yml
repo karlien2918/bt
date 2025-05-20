@@ -1,5 +1,4 @@
-# 워크플로우 이름 – GitHub Actions UI 상에서 표시됨
-name: CI - Kotlin Test and Docker Build
+name: CI - Spring Test and Docker Build
 
 # 워크플로우 트리거 조건 정의
 on:
@@ -26,17 +25,27 @@ jobs:
           distribution: 'temurin'       # Java 배포판: Eclipse Temurin (가장 많이 사용됨)
           java-version: '17'           # 사용할 JDK 버전: 17
 
+      - name: Grand Execute premission for gradlew
+        run: chmod +x ./gradlew
+
+      - name: Build test
+        run: ./gradlew test
+
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
         # 최신 Docker 기능 사용 가능하게 만드는 빌드 환경 설정 – 고급 캐시, 플랫폼 지정 등에 사용됨
 
-      - name: Log in to GitHub Container Registry
+      - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
           registry: ghcr.io                         # 사용할 레지스트리 주소 (GitHub Container Registry)
           username: ${{ github.actor }}             # 현재 GitHub Actions 실행 주체 (보통 커밋 푸시한 유저)
           password: ${{ secrets.GITHUB_TOKEN }}     # GitHub가 자동으로 제공하는 권한 토큰 – 별도 설정 불필요
+
+      - name: Extract branch name
+        run: echo "BRANCH_NAME=${GITHUB_REF##+/}" >> $GITHUB_ENV
+
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -45,7 +54,10 @@ jobs:
           push: true
           platforms: linux/amd64
           # 이미지 빌드 후 실제로 푸시까지 수행
-          tags: ghcr.io/${{ github.repository }}:ci-${{ github.sha }}
+          tags: |
+            ghcr.io/${{ github.repository }}:ci-${{ github.sha }}
+            ghcr.io/${{ github.repository }}:${{ env.BRANCH_NAME }}
+            ghcr.io/${{ github.repository }}:latest
           # Docker 이미지 태그 형식:
           # 예시: ghcr.io/사용자명/레포명:ci-<커밋 SHA>
           # 고유 SHA로 버전 추적이 쉬움 (배포 시점 추적 등 용이)
