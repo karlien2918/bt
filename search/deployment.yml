@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   annotations:
     argocd.argoproj.io/tracking-id: search:apps/Deployment:default/search
-  name: search
+  name: search-app
   namespace: default
 spec:
   selector:
@@ -12,10 +12,10 @@ spec:
   template:
     metadata:
       labels:
-        app: search
+        app: search-app
     spec:
       containers:
         - image: ghcr.io/karlien2918/bt:latest
-          name: search
+          name: search-app
           ports:
             - containerPort: 9001
