@@ -1,6 +1,5 @@
 name: CI - Spring Test and Docker Build
 
-# 워크플로우 트리거 조건 정의
 on:
   push:
     branches:
@@ -31,7 +30,6 @@ jobs:
       - name: Build test
         run: ./gradlew test
 
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
         # 최신 Docker 기능 사용 가능하게 만드는 빌드 환경 설정 – 고급 캐시, 플랫폼 지정 등에 사용됨
@@ -45,7 +43,6 @@ jobs:
 
       - name: Extract branch name
         run: echo "BRANCH_NAME=${GITHUB_REF##+/}" >> $GITHUB_ENV
-
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
